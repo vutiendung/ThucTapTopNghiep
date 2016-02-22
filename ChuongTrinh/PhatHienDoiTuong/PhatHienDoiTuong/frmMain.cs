@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 using System.Windows.Forms;
 using Emgu.CV;
-using Emgu.Util;
 using Emgu.CV.Structure;
 using DirectShowLib;
 
@@ -19,12 +12,10 @@ namespace PhatHienDoiTuong
         #region Field
 
         private frmTruNen _frmTruNen;
-        private Image<Bgr, byte> imageTemp;
-
-        public delegate void SendImage(Image<Bgr, byte> image);
-
-        public SendImage sendImage;
-
+        private frmChenhLechTamThoi _frmChenhLechTamThoi;
+        private frmOpticalFlow _frmOpticalFlow;
+        private Image<Bgr, byte> _imageTemp;
+        private bool _run = true;
         #endregion
 
         #region Constructor
@@ -36,13 +27,60 @@ namespace PhatHienDoiTuong
 
         #endregion
 
+        #region Event
+
         private void BtnRunClick(object sender, EventArgs e)
         {
-            Capture cap = new Capture(0);
-            while(true)
+            Capture cap = null;
+            if (_rdCamera.Checked)
             {
-                imageTemp = cap.QueryFrame();
-                _picScreen.Image = imageTemp.ToBitmap();
+                cap = new Capture(0);
+                _run = true;
+            }
+            else
+            {
+                if(_rdVideo.Checked)
+                {
+                    var filePath = _txtPathFile.Text;
+                    if(System.IO.File.Exists(filePath))
+                    {
+                        cap = new Capture(@"F:/Videos/MV/Crazier.mp4");
+                        _run = true;
+                    }
+                    else
+                    {
+                        _run = !_run;
+                        MessageBox.Show(
+                            "File not Found!", 
+                            "Error", 
+                            MessageBoxButtons.OK, 
+                            MessageBoxIcon.Error);
+                    }
+                }
+            }
+
+            //vong lap chay vo han lay anh
+            while (_run)
+            {
+                if (cap != null) _imageTemp = cap.QueryFrame();
+                _picScreen.Image = _imageTemp.ToBitmap();
+                if (_frmTruNen == null || _frmTruNen.IsDisposed)
+                {
+                    _frmTruNen = new frmTruNen();
+                }
+
+                if(_frmChenhLechTamThoi != null)
+                {
+                    _frmChenhLechTamThoi.Process(_imageTemp);
+                }
+                if(_frmTruNen != null)
+                {
+                    _frmTruNen.Process(_imageTemp);
+                }
+                if(_frmOpticalFlow != null)
+                {
+                    _frmOpticalFlow.Process(_imageTemp);
+                }
                 SendKeys.Flush();
             }
         }
@@ -72,25 +110,25 @@ namespace PhatHienDoiTuong
 
         private void LoadAllCamera()
         {
-            DsDevice[] _SystemCamereas = DsDevice.GetDevicesOfCat(FilterCategory.VideoInputDevice);
-            int _DeviceIndex = 0;
-            foreach (DirectShowLib.DsDevice _Camera in _SystemCamereas)
+            var systemCameras = DsDevice.GetDevicesOfCat(FilterCategory.VideoInputDevice);
+            var deviceIndex = 0;
+            foreach (var camera in systemCameras)
             {
-                _DeviceIndex++;
-                _cbCamera.Items.Add(_DeviceIndex.ToString() + "-" + _Camera.Name);
+                deviceIndex++;
+                _cbCamera.Items.Add(deviceIndex.ToString(CultureInfo.InvariantCulture) + "-" + camera.Name);
             }
             _cbCamera.SelectedIndex = 0;
         }
 
         private void ChkTruNenCheckedChanged(object sender, EventArgs e)
         {
-            if(_chkTruNen.Checked == true)
+            if(_chkTruNen.Checked)
             {
-                if(_frmTruNen == null || _frmTruNen.IsDisposed)
+                if(_frmTruNen == null)
                 {
                     _frmTruNen = new frmTruNen();
-                    _frmTruNen.Show();
                 }
+                _frmTruNen.Show();
             }
             else
             {
@@ -98,5 +136,50 @@ namespace PhatHienDoiTuong
                 _frmTruNen = null;
             }
         }
+
+        private void ChckChenhlechTamThoiCheckedChanged(object sender, EventArgs e)
+        {
+            if(_chkChenhlechTamThoi.Checked)
+            {
+                if(_frmChenhLechTamThoi == null)
+                {
+                    _frmChenhLechTamThoi = new frmChenhLechTamThoi();
+                }
+                _frmChenhLechTamThoi.Show();
+            }
+            else
+            {
+                _frmChenhLechTamThoi.Close();
+                _frmChenhLechTamThoi = null;
+            }
+        }
+
+        private void BtnBrowserClick(object sender, EventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog {Title = "Select file Videos"};
+            if(openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                _txtPathFile.Text = openFileDialog.FileName;
+            }
+        }
+
+        private void ChckOpticalFlowCheckedChanged(object sender, EventArgs e)
+        {
+            if(_chckOpticalFlow.Checked)
+            {
+                if(_frmOpticalFlow == null)
+                {
+                    _frmOpticalFlow = new frmOpticalFlow(); 
+                }
+                _frmOpticalFlow.Show();
+            }
+            else
+            {
+                _frmOpticalFlow.Close();
+                _frmOpticalFlow = null;
+            }
+        }
+
+        #endregion
     }
 }

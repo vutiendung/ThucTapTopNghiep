@@ -1,6 +1,6 @@
 ﻿namespace PhatHienDoiTuong
 {
-    partial class frmTruNen
+    partial class frmOpticalFlow
     {
         /// <summary>
         /// Required designer variable.
@@ -39,22 +39,18 @@
             this._picScreen.Name = "_picScreen";
             this._picScreen.Size = new System.Drawing.Size(640, 442);
             this._picScreen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this._picScreen.TabIndex = 0;
+            this._picScreen.TabIndex = 1;
             this._picScreen.TabStop = false;
             // 
-            // frmTruNen
+            // frmOpticalFlow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(741, 442);
             this.Controls.Add(this._picScreen);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "frmTruNen";
+            this.Name = "frmOpticalFlow";
             this.ShowIcon = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Trừ nền";
-            this.Load += new System.EventHandler(this.FrmTruNenLoad);
+            this.Text = "Optical Flow";
             ((System.ComponentModel.ISupportInitialize)(this._picScreen)).EndInit();
             this.ResumeLayout(false);
 

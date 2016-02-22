@@ -35,10 +35,12 @@
             this._rdVideo = new System.Windows.Forms.RadioButton();
             this._rdCamera = new System.Windows.Forms.RadioButton();
             this.panelHead = new System.Windows.Forms.Panel();
+            this._chkChenhlechTamThoi = new System.Windows.Forms.CheckBox();
             this._chkTruNen = new System.Windows.Forms.CheckBox();
             this._btnRun = new System.Windows.Forms.Button();
             this.pictureContain = new System.Windows.Forms.PictureBox();
             this._picScreen = new System.Windows.Forms.PictureBox();
+            this._chckOpticalFlow = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.panelHead.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureContain)).BeginInit();
@@ -69,6 +71,7 @@
             this._btnBrowser.TabIndex = 10;
             this._btnBrowser.Text = "Chọn file";
             this._btnBrowser.UseVisualStyleBackColor = true;
+            this._btnBrowser.Click += new System.EventHandler(this.BtnBrowserClick);
             // 
             // _txtPathFile
             // 
@@ -114,6 +117,8 @@
             // panelHead
             // 
             this.panelHead.BackColor = System.Drawing.SystemColors.Control;
+            this.panelHead.Controls.Add(this._chckOpticalFlow);
+            this.panelHead.Controls.Add(this._chkChenhlechTamThoi);
             this.panelHead.Controls.Add(this._chkTruNen);
             this.panelHead.Controls.Add(this._btnRun);
             this.panelHead.Controls.Add(this.groupBox1);
@@ -122,6 +127,17 @@
             this.panelHead.Name = "panelHead";
             this.panelHead.Size = new System.Drawing.Size(255, 399);
             this.panelHead.TabIndex = 0;
+            // 
+            // _chkChenhlechTamThoi
+            // 
+            this._chkChenhlechTamThoi.AutoSize = true;
+            this._chkChenhlechTamThoi.Location = new System.Drawing.Point(38, 261);
+            this._chkChenhlechTamThoi.Name = "_chkChenhlechTamThoi";
+            this._chkChenhlechTamThoi.Size = new System.Drawing.Size(152, 21);
+            this._chkChenhlechTamThoi.TabIndex = 3;
+            this._chkChenhlechTamThoi.Text = "Chênh lệch tạm thời";
+            this._chkChenhlechTamThoi.UseVisualStyleBackColor = true;
+            this._chkChenhlechTamThoi.CheckedChanged += new System.EventHandler(this.ChckChenhlechTamThoiCheckedChanged);
             // 
             // _chkTruNen
             // 
@@ -162,6 +178,17 @@
             this._picScreen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this._picScreen.TabIndex = 2;
             this._picScreen.TabStop = false;
+            // 
+            // _chckOpticalFlow
+            // 
+            this._chckOpticalFlow.AutoSize = true;
+            this._chckOpticalFlow.Location = new System.Drawing.Point(38, 288);
+            this._chckOpticalFlow.Name = "_chckOpticalFlow";
+            this._chckOpticalFlow.Size = new System.Drawing.Size(99, 21);
+            this._chckOpticalFlow.TabIndex = 4;
+            this._chckOpticalFlow.Text = "OpticalFlow";
+            this._chckOpticalFlow.UseVisualStyleBackColor = true;
+            this._chckOpticalFlow.CheckedChanged += new System.EventHandler(this.ChckOpticalFlowCheckedChanged);
             // 
             // frmMain
             // 
@@ -204,6 +231,8 @@
         private System.Windows.Forms.Button _btnRun;
         private System.Windows.Forms.CheckBox _chkTruNen;
         private System.Windows.Forms.PictureBox _picScreen;
+        private System.Windows.Forms.CheckBox _chkChenhlechTamThoi;
+        private System.Windows.Forms.CheckBox _chckOpticalFlow;
 
     }
 }
